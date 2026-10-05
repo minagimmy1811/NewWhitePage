@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Maria 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- floating emojis in the background -->
+    <div id="floaters" aria-hidden="true"></div>
+
+    <main class="card" id="card">
+        <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+        <p class="stage-label" id="stageLabel"></p>
+
+        <div class="emoji" id="emoji">💌</div>
+        <h1 class="question" id="question"></h1>
+        <p class="subtitle" id="subtitle"></p>
+
+        <div class="buttons" id="buttons">
+            <button class="btn yes" id="yesBtn">YES</button>
+            <button class="btn no" id="noBtn">NO</button>
+        </div>
+
+        <div class="reaction hidden" id="reaction">
+            <p class="reaction-text" id="reactionText"></p>
+            <button class="btn next" id="nextBtn">Next ➜</button>
+        </div>
+    </main>
+
+    <canvas id="confetti" aria-hidden="true"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
