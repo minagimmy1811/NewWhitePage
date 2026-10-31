@@ -22,10 +22,17 @@
     padding: 0;
 }
 
-html, body { height: 100%; }
+html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body { height: 100%; }
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     font-family: "Fredoka", "Comic Sans MS", system-ui, sans-serif;
     color: var(--ink);
     background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
@@ -115,6 +122,7 @@ body {
     position: relative;
     z-index: 2;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -255,6 +263,7 @@ body {
     position: relative;
     z-index: 2;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -447,19 +456,23 @@ body {
     color: #fff;
     transition: transform 0.25s cubic-bezier(.2, 1.4, .4, 1), box-shadow 0.15s ease, left 0.3s ease, top 0.3s ease, font-size 0.25s ease, padding 0.25s ease;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
 }
 
 .btn.yes {
     --grow: 1;
     background: var(--yes);
     box-shadow: 0 6px 0 var(--yes-dark);
-    transform: scale(var(--grow));
+    font-size: calc(20px * var(--grow));
+    padding: calc(14px * var(--grow)) calc(40px * var(--grow));
     animation: yesGlow 2s ease-in-out infinite;
     z-index: 2;
 }
 
-.btn.yes:hover { transform: scale(calc(var(--grow) * 1.07)) translateY(-2px); }
-.btn.yes:active { transform: scale(calc(var(--grow) * 0.95)); }
+.btn.yes:hover { transform: scale(1.06) translateY(-2px); }
+.btn.yes:active { transform: scale(0.95); }
 
 @keyframes yesGlow {
     0%, 100% { box-shadow: 0 6px 0 var(--yes-dark), 0 0 0 0 rgba(60, 207, 145, 0.5); }
@@ -767,4 +780,30 @@ body {
 /* keep the mini game playable even with reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .game .snack { animation-duration: var(--dur) !important; }
+}
+
+/* ================= phones ================= */
+@media (max-width: 480px) {
+    .stage-wrap { padding: 12px 10px; align-items: flex-start; padding-top: max(12px, env(safe-area-inset-top)); }
+    .card { padding: 22px 14px 22px; border-radius: 22px; }
+    .question { font-size: 21px; }
+    .subtitle { font-size: 15px; margin-bottom: 14px; }
+    .mascot { font-size: 62px; margin: 2px 0 6px; }
+    .hearts-progress { font-size: 10px; gap: 2px; }
+    .buttons { gap: 14px; min-height: 84px; }
+    .btn { padding: 14px 32px; font-size: 19px; min-height: 52px; }
+    .btn.yes { font-size: calc(19px * var(--grow)); padding: calc(14px * var(--grow)) calc(32px * var(--grow)); }
+    .btn.wa { width: 100%; font-size: 17px; padding: 14px 16px; }
+    .reaction-text { font-size: 17px; padding: 14px; }
+    .polaroids { max-height: 38dvh; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .game { height: 46dvh; max-height: 300px; min-height: 230px; }
+    .snack { font-size: 46px; padding: 8px; }
+    .answers { max-height: 46dvh; }
+    .counter { font-size: 40px; }
+    .intro-hint { font-size: 34px; }
+}
+
+@media (max-height: 640px) {
+    .mascot { font-size: 50px; }
+    .polaroids { max-height: 32dvh; }
 }

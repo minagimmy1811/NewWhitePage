@@ -63,9 +63,7 @@ const dodgeBubbles = ["Hehe 😜", "Too slow 🐢", "Nope! 🙅‍♀️", "Catc
    q      : the question (typed out)
    sub    : small text under it (can contain HTML)
    yes/no : what appears after she answers
-   dodge  : how many times NO runs away before she can click it
    party  : "yes" | "no" | "both" -> confetti on that answer
-   trap   : true -> YES is the "wrong" answer (shock face + shake)
    extra  : function that draws something extra on the page
    onAnswer: special effect after answering
    ========================================================= */
@@ -77,7 +75,6 @@ const stages = [
         sub: "Every page has only two buttons. Choose wisely 😌",
         yes: "Good choice! Fasten your seatbelt, this is going to be a ride 🎢",
         no: "You found the NO button… but you're already here, so let's go anyway 😂",
-        dodge: 3,
         party: "yes",
     },
     {
@@ -91,7 +88,6 @@ const stages = [
         },
         yes: "The day we first met! 23/7/2023. I still remember it like it was yesterday 🗓️",
         no: "Wow. I remember it and you don't?! 23/7/2023 — the day we met. Write it down 📝",
-        dodge: 2,
         party: "yes",
     },
     {
@@ -101,7 +97,6 @@ const stages = [
         sub: "Not your birthday. That was 6 days earlier 😉",
         yes: "Yep! The day we started talking. Who knew a few texts would turn into all of that 📱✨",
         no: "That's the day we started talking! I remember, so you're officially losing this game 😎",
-        dodge: 2,
     },
     {
         label: "Stage 3 · Hangout #1",
@@ -110,7 +105,6 @@ const stages = [
         sub: "I'll give you a second… ⏳",
         yes: "29th of September 2023! See? I didn't even need a calendar 🧠",
         no: "29th of September 2023. Our very first hangout. Don't worry, I've got the memory for both of us 💾",
-        dodge: 2,
     },
     {
         label: "Stage 4 · Hangout #2",
@@ -119,7 +113,6 @@ const stages = [
         sub: "Wait… you don't even like hanging out much. So it must've been worth it 😏",
         yes: "7th of October 2023! Two hangouts — from YOU?! That's basically a world record 🏆",
         no: "7th of October 2023! Two hangouts from someone who hates going out. Clearly I was special 😌",
-        dodge: 3,
     },
     {
         label: "Stage 5 · Official",
@@ -128,7 +121,6 @@ const stages = [
         sub: "The day the status changed 👀",
         yes: "We started dating! 13/10/2023 — the main episode 💕",
         no: "We started DATING, Maria! 13/10/2023! How do you forget the main episode?! 😂",
-        dodge: 4,
         party: "yes",
         onAnswer: () => heartRain(40),
     },
@@ -139,7 +131,6 @@ const stages = [
         sub: "It was literally the next day. Someone was excited 🙈",
         yes: "14th of October 2023! One day after it became official. No time was wasted 😂",
         no: "14th of October 2023 — the very next day! I remember, so you owe me a point 🎯",
-        dodge: 2,
     },
     {
         label: "Stage 7 · Important date",
@@ -151,7 +142,6 @@ const stages = [
         },
         yes: "Of course I do — the 4th of September! 🎉 Make a wish, I just blew the candles for you 🕯️",
         no: "Excuse me?! The 4th of September! I would NEVER forget it 😤🎂",
-        dodge: 3,
         party: "both",
         onAnswer: () => { const c = $("cake"); if (c) c.classList.add("blown"); },
     },
@@ -162,17 +152,15 @@ const stages = [
         sub: "Zoinks! Think carefully…",
         yes: "Scooby-Dooby-Doo! 🐾 Scooby Doo, Meet the Robinsons and Aladdin — your top 3. Told you I remember.",
         no: "Ruh-roh! 😱 Then is it Meet the Robinsons? Or Aladdin? Either way, I know your top 3 by heart 📺",
-        dodge: 2,
         party: "yes",
     },
     {
         label: "Stage 9 · Movie night",
         mascot: "🧞",
-        q: "Movie night! YES = Meet the Robinsons, NO = Aladdin.",
-        sub: "There's no wrong answer. Except the one you're about to pick 😂",
-        yes: "Meet the Robinsons! \"Keep moving forward\" — remember that line, it's coming back later 👀",
+        q: "Movie night: Meet the Robinsons first, then Aladdin. Deal?",
+        sub: "Popcorn included. Talking during the movie is not 🤫",
+        yes: "Deal! \"Keep moving forward\" — remember that line, it's coming back later 👀 And then a whole new world 🧞‍♂️",
         no: "Aladdin! 🧞‍♂️ If I found a magic lamp, one wish would be getting this exact answer 😄",
-        dodge: 0,
         party: "both",
     },
     {
@@ -185,46 +173,38 @@ const stages = [
     {
         label: "Stage 11 · A little snack",
         mascot: "🍬",
-        q: "Speaking of mint… want a mint gum?",
-        sub: "Fresh breath, cool vibes…",
-        yes: "WHO ARE YOU AND WHAT HAVE YOU DONE WITH MARIA?! 🚨 She HATES mint gum!",
-        no: "Correct! Mint gum = disgusting. Have some gummy bears instead 🧸 I know you love them.",
-        dodge: 0,
-        trap: true,
-        party: "no",
+        q: "Speaking of mint… you still hate mint gum, right?",
+        sub: "Fresh breath, cool vibes… disgusting 🤢",
+        yes: "Correct! Mint gum = disgusting. Have some gummy bears instead 🧸 I know you love them.",
+        no: "WHO ARE YOU AND WHAT HAVE YOU DONE WITH MARIA?! 🚨",
+        party: "yes",
     },
     {
         label: "Stage 12 · Weekend plans",
         mascot: "🎉",
-        q: "Wanna go to a huge party with 200 strangers and talk to everyone?",
-        sub: "Small talk, loud music, meeting new people…",
-        yes: "Liar 😂 You don't like being social and you don't like going out too much. I KNOW you.",
-        no: "Exactly what I expected 😂 Staying home > socializing. I remember, don't worry.",
-        dodge: 0,
-        trap: true,
-        party: "no",
+        q: "Staying home > a huge party with 200 strangers. Agreed?",
+        sub: "Small talk, loud music, meeting new people… no thanks 😂",
+        yes: "Exactly what I expected 😂 You don't like being social or going out too much. I KNOW you.",
+        no: "Liar 😂",
+        party: "yes",
     },
     {
         label: "Stage 13 · Chores",
         mascot: "🧽",
-        q: "Would you like to wash the dishes after dinner?",
-        sub: "There's only like… 47 plates 🍽️",
-        yes: "Hold on, let me call a doctor 🚑 Maria NEVER volunteers to wash the dishes.",
-        no: "Of course not 😂 You hate washing the dishes. Noted since forever.",
-        dodge: 0,
-        trap: true,
-        party: "no",
+        q: "47 dirty plates after dinner 🍽️ Should I wash them for you?",
+        sub: "Because we both know you're not touching them 😂",
+        yes: "Of course 😂 You hate washing the dishes. Noted since forever. I'll do it 🧽",
+        no: "Hold on, let me call a doctor 🚑",
+        party: "yes",
     },
     {
         label: "Stage 14 · Gift time",
         mascot: "💍",
-        q: "I got you a gift… a pair of earrings! Do you like them?",
-        sub: "Sparkly, shiny, beautiful… ✨",
-        yes: "Gotcha! 😂 It was a trap. You don't like wearing earrings — I'd get you a bracelet instead 📿",
-        no: "Correct!! Earrings are a no. Bracelets are a YES. Told you I remember 📿",
-        dodge: 0,
-        trap: true,
-        party: "no",
+        q: "I got you earrings… just kidding 😂 Should I swap them for a bracelet?",
+        sub: "Sparkly, shiny, and NOT in your ears ✨",
+        yes: "Knew it! You don't like wearing earrings — bracelets all the way. Told you I remember 📿",
+        no: "Gotcha 😂",
+        party: "yes",
     },
     {
         label: "Stage 15 · The real gift",
@@ -233,7 +213,6 @@ const stages = [
         sub: "Imagine Scooby Doo on your feet 🐶🧦",
         yes: "I knew it! Cartoon socks are the way to your heart 🧦❤️",
         no: "Lies! You love cartoon socks. I'm wrapping them anyway 🎁🧦",
-        dodge: 4,
         party: "yes",
     },
     {
@@ -243,7 +222,6 @@ const stages = [
         sub: "There's always room for one more…",
         yes: "Obviously! A laptop without stickers is just a sad grey rectangle 😂",
         no: "Suspicious 🤨 You love laptop stickers. Is there just no space left? 😂",
-        dodge: 3,
         party: "yes",
     },
     {
@@ -253,7 +231,6 @@ const stages = [
         sub: "Before you answer: you love food so much, the answer is always the same 😂",
         yes: "Of course you are 😂 Chicken? Gummy bears? Red Bull on the side? Your order is ready 🍗🧸🥫",
         no: "I don't believe you. You're ALWAYS hungry 😂 Chicken is on its way 🍗",
-        dodge: 5,
         party: "yes",
     },
     {
@@ -263,7 +240,6 @@ const stages = [
         sub: "It gives you wiiiings 🪽",
         yes: "Here you go 🥫⚡ One cold Red Bull… and there it flies 🪽",
         no: "Saving it for later, smart. Still, I know it's your favorite 🥫",
-        dodge: 2,
         onAnswer: (choice) => { if (choice === "YES") flyAway("🥫"); },
     },
     {
@@ -273,7 +249,6 @@ const stages = [
         sub: "3… 2… 1… smile 😊",
         yes: "Normal?! 😂 We both know you'd make a weird face. Then you'd take a close-up of MY eyes 👁️👁️",
         no: "Right, normal pictures are boring. Weirdo pictures only 🤪 — and close-ups of people's eyes 👁️",
-        dodge: 2,
         onAnswer: () => { cameraFlash(); setMascot("👁️👁️", "shock"); },
     },
     {
@@ -301,14 +276,13 @@ const stages = [
         extra: (el) => drawPolaroids(el),
         yes: "I told you. Every date, every like, every dislike. It's all still here 🧠❤️",
         no: "Scroll through those photos again 😂 I remember every single detail about you.",
-        dodge: 6,
         party: "yes",
     },
     {
         label: "The last page",
         mascot: "📖",
         q: "Do you want to start a brand new page?",
-        sub: "<span class=\"hand\">Keep moving forward…</span><br>No tricks on this one. The NO button stays still — your answer is yours.",
+        sub: "<span class=\"hand\">Keep moving forward…</span>",
         extra: (el) => {
             el.innerHTML =
                 '<div class="book" id="book">' +
@@ -319,7 +293,6 @@ const stages = [
         },
         yes: "This is the best answer I've ever gotten 🥹 A brand new page it is. I'll be waiting for your message ❤️",
         no: "That's okay. Thank you for reading until the end. I just wanted you to know I remember every single detail — and I always will 🤍",
-        dodge: 0,
         party: "yes",
         final: true,
         onAnswer: (choice) => {
@@ -357,7 +330,6 @@ const memories = [
    State
    ========================================================= */
 let current = 0;
-let dodgesLeft = 0;
 let noTries = 0;
 let typing = null;
 let finished = false;
@@ -451,7 +423,6 @@ function say(text) {
 function render() {
     const s = stages[current];
     resetButtons();
-    dodgesLeft = s.dodge || 0;
     noTries = 0;
 
     drawProgress();
@@ -512,7 +483,7 @@ function answer(choice) {
     reaction.classList.remove("hidden");
     nextBtn.textContent = s.final ? "See my answers 📋" : "Next ➜";
 
-    const wrongAnswer = s.trap ? choice === "YES" : false;
+    const wrongAnswer = false;
     setMascot(s.mascot, wrongAnswer ? "shock" : choice === "YES" ? "happy" : "sad");
 
     const p = s.party;
@@ -548,32 +519,73 @@ function next() {
 /* =========================================================
    The NO button: runs away, shrinks, begs. YES grows. 🏃‍♀️
    ========================================================= */
+let lastDodge = 0;
+const noSpot = document.createElement("span");
+noSpot.setAttribute("aria-hidden", "true");
+let lastPointer = { x: -999, y: -999 };
+
+function noIsActive() {
+    return !buttons.classList.contains("hidden");
+}
+
+// The NO button can never be pressed: it runs before a finger or cursor reaches it.
 function dodge() {
-    if (dodgesLeft <= 0) return false;
-    dodgesLeft--;
+    if (!noIsActive()) return;
+    const now = performance.now();
+    if (now - lastDodge < 220) return; // one jump per attempt
+    lastDodge = now;
     noTries++;
 
-    const yesGrow = 1 + noTries * 0.18;
-    const noShrink = Math.max(0.6, 1 - noTries * 0.07);
-    yesBtn.style.setProperty("--grow", yesGrow.toFixed(2));
-    noBtn.style.setProperty("--shrink", noShrink.toFixed(2));
+    // YES grows (but never wider than the screen), NO shrinks a bit
+    const vw = window.innerWidth;
+    const curGrow = parseFloat(yesBtn.style.getPropertyValue("--grow")) || 1;
+    const maxGrow = Math.min(2.4, curGrow * (vw * 0.85) / Math.max(1, yesBtn.offsetWidth));
+    yesBtn.style.setProperty("--grow", Math.min(maxGrow, 1 + noTries * 0.15).toFixed(2));
+    noBtn.style.setProperty("--shrink", Math.max(0.7, 1 - noTries * 0.05).toFixed(2));
+    noBtn.textContent = pleas[(noTries - 1) % pleas.length];
 
-    const pad = 16;
-    const w = noBtn.offsetWidth;
-    const h = noBtn.offsetHeight;
     // move it to <body> so the card's 3D/blur effects can't trap it off-screen
-    if (noBtn.parentNode !== document.body) document.body.appendChild(noBtn);
+    // (an empty placeholder keeps YES from sliding into the spot she was aiming at)
+    if (noBtn.parentNode !== document.body) {
+        noSpot.style.width = noBtn.offsetWidth + "px";
+        noSpot.style.height = noBtn.offsetHeight + "px";
+        buttons.appendChild(noSpot);
+        document.body.appendChild(noBtn);
+    }
     noBtn.classList.add("runaway");
-    noBtn.style.left = rand(pad, Math.max(pad, window.innerWidth - w - pad)) + "px";
-    noBtn.style.top = rand(pad, Math.max(pad, window.innerHeight - h - pad)) + "px";
-    noBtn.textContent = dodgesLeft > 0 ? pleas[(noTries - 1) % pleas.length] : "Fine… NO 🙄";
+    placeNo();
 
     setMascot(stages[current].mascot, "sad");
-    say(pick(dodgeBubbles));
-    return true;
+    say(noTries >= 6 && noTries % 3 === 0 ? "The green button is RIGHT there 👉" : pick(dodgeBubbles));
+}
+
+// Pick a spot on screen far from her finger and not on top of YES.
+function placeNo() {
+    const vv = window.visualViewport;
+    const vw = vv ? vv.width : window.innerWidth;
+    const vh = vv ? vv.height : window.innerHeight;
+    const w = noBtn.offsetWidth;
+    const h = noBtn.offsetHeight;
+    const pad = 12;
+    const yes = yesBtn.getBoundingClientRect();
+    let best = null;
+    let bestDist = -1;
+    for (let i = 0; i < 30; i++) {
+        const x = rand(pad, Math.max(pad, vw - w - pad));
+        const y = rand(pad, Math.max(pad, vh - h - pad));
+        const overYes = x < yes.right + 10 && x + w > yes.left - 10 && y < yes.bottom + 10 && y + h > yes.top - 10;
+        if (overYes) continue;
+        const d = Math.hypot(x + w / 2 - lastPointer.x, y + h / 2 - lastPointer.y);
+        if (d > bestDist) { best = { x, y }; bestDist = d; }
+        if (d > Math.min(vw, vh) * 0.45) break;
+    }
+    if (!best) best = { x: pad, y: pad };
+    noBtn.style.left = best.x + "px";
+    noBtn.style.top = best.y + "px";
 }
 
 function resetButtons() {
+    noSpot.remove();
     if (noBtn.parentNode !== buttons) buttons.appendChild(noBtn);
     noBtn.classList.remove("runaway");
     noBtn.style.left = "";
@@ -583,12 +595,31 @@ function resetButtons() {
     noBtn.textContent = "NO";
 }
 
-noBtn.addEventListener("pointerenter", (e) => {
-    if (e.pointerType === "mouse") dodge(); // on phones a tap = click below
-});
-noBtn.addEventListener("click", () => {
-    if (dodge()) return; // it ran away instead of being clicked
-    answer("NO");
+// Is a finger / cursor at (x, y) close to the NO button?
+function nearNo(x, y, margin) {
+    const r = noBtn.getBoundingClientRect();
+    return x > r.left - margin && x < r.right + margin && y > r.top - margin && y < r.bottom + margin;
+}
+
+// cursor or finger moving toward NO -> it runs
+window.addEventListener("pointermove", (e) => {
+    lastPointer = { x: e.clientX, y: e.clientY };
+    if (noIsActive() && nearNo(e.clientX, e.clientY, e.pointerType === "mouse" ? 60 : 40)) dodge();
+}, { passive: true });
+
+// finger lands on or near NO -> it's gone before the tap finishes
+window.addEventListener("pointerdown", (e) => {
+    lastPointer = { x: e.clientX, y: e.clientY };
+    if (noIsActive() && nearNo(e.clientX, e.clientY, 30)) {
+        if (e.target === noBtn) e.preventDefault();
+        dodge();
+    }
+}, true);
+
+// keyboard (Enter / Space) or anything else that "clicks" it -> it runs
+noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    dodge();
 });
 yesBtn.addEventListener("click", (e) => {
     burstHearts(e.clientX, e.clientY, 10);
