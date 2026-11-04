@@ -6,7 +6,7 @@
     <title>For Maria 💌</title>
     <meta name="theme-color" content="#ffd6e8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,6 +33,11 @@
         </button>
         <p class="intro-tap">tap the envelope</p>
         <p class="intro-note">P.S. every button you press goes straight to him 👀 so choose wisely.</p>
+        <figure class="verse intro-verse">
+            <span class="verse-cross" aria-hidden="true">☩</span>
+            <blockquote class="verse-text">“Set me as a seal upon your heart, as a seal upon your arm; for love is as strong as death.”</blockquote>
+            <figcaption class="verse-ref">— Song of Songs 8:6</figcaption>
+        </figure>
     </section>
 
     <!-- ========== STAGES ========== -->
@@ -59,6 +64,14 @@
                 <p class="reaction-text" id="reactionText"></p>
                 <button class="btn next" id="nextBtn">Next ➜</button>
             </div>
+
+            <!-- a verse about love on every page -->
+            <figure class="verse hidden" id="verse">
+                <span class="verse-cross" aria-hidden="true">☩</span>
+                <blockquote class="verse-text" id="verseText"></blockquote>
+                <figcaption class="verse-ref" id="verseRef"></figcaption>
+                <p class="verse-note hidden" id="verseNote"></p>
+            </figure>
         </div>
     </main>
 

@@ -26,6 +26,16 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 const MET_ON = new Date(2023, 6, 23); // 23 July 2023
 const daysSince = (d) => Math.floor((Date.now() - d.getTime()) / 86400000);
+const BROKE_UP = new Date(2024, 4, 10); // 10 May 2024
+function sinceBreakup() {
+    const now = new Date();
+    let months = (now.getFullYear() - BROKE_UP.getFullYear()) * 12 + now.getMonth() - BROKE_UP.getMonth();
+    if (now.getDate() < BROKE_UP.getDate()) months--;
+    const y = Math.floor(months / 12);
+    const m = months % 12;
+    const part = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+    return y && m ? part(y, "year") + " and " + part(m, "month") : y ? part(y, "year") : part(m, "month");
+}
 
 const card = $("card");
 const mascot = $("mascot");
@@ -70,6 +80,7 @@ const dodgeBubbles = ["Hehe 😜", "Too slow 🐢", "Nope! 🙅‍♀️", "Catc
 const stages = [
     {
         label: "Stage 0 · Warm up",
+        verse: { text: "I thank my God upon every remembrance of you.", ref: "Philippians 1:3" },
         mascot: "💌",
         q: "Hi Maria! Someone built a whole website just for you. Wanna see it?",
         sub: "Every page has only two buttons. Choose wisely 😌",
@@ -79,6 +90,7 @@ const stages = [
     },
     {
         label: "Stage 1 · The beginning",
+        verse: { text: "…yet I will not forget you. See, I have inscribed you on the palms of My hands.", ref: "Isaiah 49:15–16" },
         mascot: "👀",
         q: "Do you remember the 23rd of July 2023?",
         sub: "Hint: two people met and had no idea what was coming.",
@@ -92,6 +104,7 @@ const stages = [
     },
     {
         label: "Stage 2 · First message",
+        verse: { text: "Let me see your face, let me hear your voice; for your voice is sweet, and your face is lovely.", ref: "Song of Songs 2:14" },
         mascot: "💬",
         q: "10th of September 2023… does that ring a bell?",
         sub: "Not your birthday. That was 6 days earlier 😉",
@@ -100,6 +113,7 @@ const stages = [
     },
     {
         label: "Stage 3 · Hangout #1",
+        verse: { text: "Two are better than one, because they have a good reward for their labor.", ref: "Ecclesiastes 4:9" },
         mascot: "🚶‍♀️",
         q: "Do you remember the first time we hung out?",
         sub: "I'll give you a second… ⏳",
@@ -108,6 +122,7 @@ const stages = [
     },
     {
         label: "Stage 4 · Hangout #2",
+        verse: { text: "For wherever you go, I will go; and wherever you lodge, I will lodge.", ref: "Ruth 1:16" },
         mascot: "✌️",
         q: "And the second time? Bet you don't know this one.",
         sub: "Wait… you don't even like hanging out much. So it must've been worth it 😏",
@@ -116,6 +131,7 @@ const stages = [
     },
     {
         label: "Stage 5 · Official",
+        verse: { text: "I am my beloved's, and my beloved is mine.", ref: "Song of Songs 6:3" },
         mascot: "💘",
         q: "13th of October 2023. You know what happened, right?",
         sub: "The day the status changed 👀",
@@ -126,6 +142,7 @@ const stages = [
     },
     {
         label: "Stage 6 · First date",
+        verse: { text: "He brought me to the banqueting house, and his banner over me was love.", ref: "Song of Songs 2:4" },
         mascot: "🍽️",
         q: "Do you remember our first time going out as a couple?",
         sub: "It was literally the next day. Someone was excited 🙈",
@@ -134,6 +151,7 @@ const stages = [
     },
     {
         label: "Stage 7 · Important date",
+        verse: { text: "This is the day the LORD has made; we will rejoice and be glad in it.", ref: "Psalm 118:24" },
         mascot: "🎂",
         q: "Do you think I remember your birthday?",
         sub: "Careful… this is a test of MY memory, not yours.",
@@ -147,6 +165,7 @@ const stages = [
     },
     {
         label: "Stage 8 · Cartoon quiz",
+        verse: { text: "A faithful friend is a strong defence: and he that hath found such an one hath found a treasure.", ref: "Sirach 6:14" },
         mascot: "🐶",
         q: "Is Scooby Doo still the best show in the world?",
         sub: "Zoinks! Think carefully…",
@@ -156,6 +175,7 @@ const stages = [
     },
     {
         label: "Stage 9 · Movie night",
+        verse: { text: "Rise up, my love, my fair one, and come away.", ref: "Song of Songs 2:10" },
         mascot: "🧞",
         q: "Movie night: Meet the Robinsons first, then Aladdin. Deal?",
         sub: "Popcorn included. Talking during the movie is not 🤫",
@@ -166,12 +186,14 @@ const stages = [
     {
         type: "game",
         label: "Stage 10 · Mini game",
+        verse: { text: "Better is a dinner of herbs where love is, than a fatted calf with hatred.", ref: "Proverbs 15:17" },
         mascot: "🍗",
         q: "Feed Maria! Catch 6 snacks 🍗🧸🥫",
         sub: "Tap the food before it falls. But DON'T touch the mint 🌿 — I know you hate it.",
     },
     {
         label: "Stage 11 · A little snack",
+        verse: { text: "Oh, taste and see that the LORD is good.", ref: "Psalm 34:8" },
         mascot: "🍬",
         q: "Speaking of mint… you still hate mint gum, right?",
         sub: "Fresh breath, cool vibes… disgusting 🤢",
@@ -181,6 +203,7 @@ const stages = [
     },
     {
         label: "Stage 12 · Weekend plans",
+        verse: { text: "…that you also aspire to lead a quiet life…", ref: "1 Thessalonians 4:11" },
         mascot: "🎉",
         q: "Staying home > a huge party with 200 strangers. Agreed?",
         sub: "Small talk, loud music, meeting new people… no thanks 😂",
@@ -190,6 +213,7 @@ const stages = [
     },
     {
         label: "Stage 13 · Chores",
+        verse: { text: "Bear one another's burdens, and so fulfill the law of Christ.", ref: "Galatians 6:2" },
         mascot: "🧽",
         q: "47 dirty plates after dinner 🍽️ Should I wash them for you?",
         sub: "Because we both know you're not touching them 😂",
@@ -199,6 +223,7 @@ const stages = [
     },
     {
         label: "Stage 14 · Gift time",
+        verse: { text: "You have ravished my heart with one look of your eyes, with one link of your necklace.", ref: "Song of Songs 4:9" },
         mascot: "💍",
         q: "I got you earrings… just kidding 😂 Should I swap them for a bracelet?",
         sub: "Sparkly, shiny, and NOT in your ears ✨",
@@ -208,6 +233,7 @@ const stages = [
     },
     {
         label: "Stage 15 · The real gift",
+        verse: { text: "Let all that you do be done with love.", ref: "1 Corinthians 16:14" },
         mascot: "🧦",
         q: "Okay, real gift: socks with cartoon characters on them. Yes?",
         sub: "Imagine Scooby Doo on your feet 🐶🧦",
@@ -217,6 +243,7 @@ const stages = [
     },
     {
         label: "Stage 16 · Laptop decoration",
+        verse: { text: "But above all these things put on love, which is the bond of perfection.", ref: "Colossians 3:14" },
         mascot: "💻",
         q: "Does your laptop need one more sticker?",
         sub: "There's always room for one more…",
@@ -226,6 +253,7 @@ const stages = [
     },
     {
         label: "Stage 17 · Food",
+        verse: { text: "Go, eat your bread with joy.", ref: "Ecclesiastes 9:7" },
         mascot: "😋",
         q: "Are you hungry right now?",
         sub: "Before you answer: you love food so much, the answer is always the same 😂",
@@ -235,6 +263,7 @@ const stages = [
     },
     {
         label: "Stage 18 · Energy check",
+        verse: { text: "But those who wait on the LORD shall renew their strength; they shall mount up with wings like eagles.", ref: "Isaiah 40:31" },
         mascot: "⚡",
         q: "Need a Red Bull to survive the rest of this website?",
         sub: "It gives you wiiiings 🪽",
@@ -244,6 +273,7 @@ const stages = [
     },
     {
         label: "Stage 19 · Photo time",
+        verse: { text: "Behold, you are fair, my love! Behold, you are fair! You have dove's eyes.", ref: "Song of Songs 1:15" },
         mascot: "📸",
         q: "Can I take a normal, nice, pretty picture of you?",
         sub: "3… 2… 1… smile 😊",
@@ -254,6 +284,7 @@ const stages = [
     {
         type: "loading",
         label: "Stage 20 · Processing",
+        verse: { text: "Many waters cannot quench love, nor can the floods drown it.", ref: "Song of Songs 8:7" },
         mascot: "🧠",
         q: "Loading every single detail about Maria…",
         sub: "",
@@ -266,10 +297,12 @@ const stages = [
             "Restocking chicken, gummy bears & Red Bull",
             "Deleting all mint gum from the universe",
             "Hiding the dishes and the earrings",
+            "Still loving you: " + sinceBreakup() + " since 10/05/2024 and counting",
         ],
     },
     {
         label: "Stage 21 · The proof",
+        verse: { text: "So Jacob served seven years for Rachel, and they seemed only a few days to him because of the love he had for her.", ref: "Genesis 29:20", note: () => "Jacob waited 7 years. It's been " + sinceBreakup() + " since 10/05/2024 — and to me they've felt like a few days, because I never stopped loving you." },
         mascot: "📷",
         q: "So… do you believe me now that I remember every single detail?",
         sub: "",
@@ -280,6 +313,7 @@ const stages = [
     },
     {
         label: "The last page",
+        verse: { text: "Do not remember the former things, nor consider the things of old. Behold, I will do a new thing.", ref: "Isaiah 43:18–19" },
         mascot: "📖",
         q: "Do you want to start a brand new page?",
         sub: "<span class=\"hand\">Keep moving forward…</span>",
@@ -438,6 +472,8 @@ function render() {
     void card.offsetWidth;
     card.classList.add("enter");
 
+    showVerse(s.verse);
+
     typeText(questionEl, s.q, () => {
         subtitleEl.innerHTML = s.sub || "";
         subtitleEl.classList.add("fade-in");
@@ -447,6 +483,19 @@ function render() {
         buttons.classList.remove("hidden");
         buttons.classList.add("fade-in");
     });
+}
+
+function showVerse(v) {
+    const box = $("verse");
+    if (!v) { box.classList.add("hidden"); return; }
+    $("verseText").textContent = "“" + v.text + "”";
+    $("verseRef").textContent = "— " + v.ref;
+    const note = $("verseNote");
+    note.textContent = v.note ? v.note() : "";
+    note.classList.toggle("hidden", !v.note);
+    box.classList.remove("hidden", "verse-in");
+    void box.offsetWidth;
+    box.classList.add("verse-in");
 }
 
 function typeText(el, text, done) {
@@ -790,6 +839,7 @@ function showResults() {
     bubble.classList.add("hidden");
     questionEl.textContent = "Here's everything you answered";
     subtitleEl.innerHTML = "He's already getting them 👀";
+    showVerse({ text: "Love bears all things, believes all things, hopes all things, endures all things. Love never fails.", ref: "1 Corinthians 13:7–8" });
     extraEl.innerHTML = "";
 
     const ul = document.createElement("ul");
