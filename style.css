@@ -454,7 +454,7 @@ body {
     padding: 14px 40px;
     cursor: pointer;
     color: #fff;
-    transition: transform 0.25s cubic-bezier(.2, 1.4, .4, 1), box-shadow 0.15s ease, left 0.3s ease, top 0.3s ease, font-size 0.25s ease, padding 0.25s ease;
+    transition: transform 0.25s cubic-bezier(.2, 1.4, .4, 1), box-shadow 0.15s ease, font-size 0.25s ease, padding 0.25s ease;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
@@ -491,6 +491,13 @@ body {
 .btn.no.runaway {
     position: fixed;
     z-index: 30;
+}
+
+.btn.no.jump { animation: noPop 0.3s cubic-bezier(.2, 1.6, .4, 1); }
+
+@keyframes noPop {
+    from { opacity: 0; scale: 0.3; }
+    to { opacity: 1; scale: 1; }
 }
 
 .btn.next, .btn.accent {
@@ -782,6 +789,39 @@ body {
     .game .snack { animation-duration: var(--dur) !important; }
 }
 
+/* ================= his letter ================= */
+.card.letter-page .stage-label,
+.card.letter-page .mascot,
+.card.letter-page .question,
+.card.letter-page .subtitle { display: none; }
+
+.reaction-text:empty { display: none; }
+
+.letter-paper {
+    text-align: left;
+    background:
+        repeating-linear-gradient(180deg, transparent 0, transparent 31px, #f1e4d3 31px, #f1e4d3 32px),
+        #fffaf3;
+    border-radius: 14px;
+    padding: 22px 22px 18px;
+    box-shadow: 0 10px 26px rgba(120, 80, 40, 0.15), inset 0 0 0 1px #f0e0c8;
+    color: #3b2c1e;
+}
+
+.letter-paper p {
+    font-size: 17px;
+    line-height: 32px;
+    animation: fadeUp 0.9s ease both;
+}
+
+.letter-paper .letter-sign {
+    margin-top: 14px;
+    text-align: right;
+    font-family: "Caveat", cursive;
+    font-size: 30px;
+    color: #c0264d;
+}
+
 /* ================= bible verse ================= */
 .verse {
     position: relative;
@@ -866,6 +906,8 @@ body {
     .counter { font-size: 40px; }
     .verse { margin-top: 16px; padding: 12px 14px 12px; }
     .verse-text { font-size: 17px; }
+    .letter-paper { padding: 16px 14px 14px; }
+    .letter-paper p { font-size: 16px; line-height: 30px; }
     .intro-hint { font-size: 34px; }
 }
 

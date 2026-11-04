@@ -312,6 +312,13 @@ const stages = [
         party: "yes",
     },
     {
+        type: "letter",
+        label: "",
+        mascot: "",
+        q: "",
+        letter: ["All of this is good but it’s not what originally this page was intended to be for. This page wasn’t meant to just express my feelings towards you and that I remember all of these details. I love you and this isn’t the problem. Ana 3aref enna momkn zaman makonash andag haga f enena n manage el 3elaka kwys w mahatenash standards sah msheina 3aleha 3shan kda el denia bazet w ana 3aref eny ghaltan fy Wghet nzarek w Wghet nzary w el 3aks saheeh. Ana kaman 3aref en ehtmalyet enk trodi olayela bas habeit a3ml el landing page di 3shan A2olk ely f3ln gowaya w akhod el risk 3shan marga3sh a2ol yaretny 3mlt kda. Ana olt abl kda yaretny 3mlt X w ma3mltosh w nedmt fa msh 3aiz akarar el ghalta Di tany. I hope enk tkoni kwysa w aked aked i hope enk takhdi el page di kolha ka haga heartwarming msh ka haga badghat 3aleke beeha aw bhawel awsal beeha l haga ana 3aiz awasal haga w 3aref en el ehtmaleya el akhr enha matenfa3sh.", "Thank you Maria ♥️."],
+    },
+    {
         label: "The last page",
         verse: { text: "Do not remember the former things, nor consider the things of old. Behold, I will do a new thing.", ref: "Isaiah 43:18–19" },
         mascot: "📖",
@@ -468,11 +475,13 @@ function render() {
     buttons.classList.add("hidden");
     reaction.classList.add("hidden");
 
-    card.classList.remove("leave", "shake");
+    card.classList.remove("leave", "shake", "letter-page");
     void card.offsetWidth;
     card.classList.add("enter");
 
     showVerse(s.verse);
+
+    if (s.type === "letter") return showLetter(s);
 
     typeText(questionEl, s.q, () => {
         subtitleEl.innerHTML = s.sub || "";
@@ -483,6 +492,27 @@ function render() {
         buttons.classList.remove("hidden");
         buttons.classList.add("fade-in");
     });
+}
+
+// A page with only his message on it: no emoji, no buttons, no verse.
+function showLetter(s) {
+    card.classList.add("letter-page");
+    mascot.textContent = "";
+    questionEl.textContent = "";
+    const paper = document.createElement("div");
+    paper.className = "letter-paper";
+    s.letter.forEach((line, i) => {
+        const p = document.createElement("p");
+        p.textContent = line;
+        if (i === s.letter.length - 1) p.className = "letter-sign";
+        p.style.animationDelay = 0.3 + i * 0.9 + "s";
+        paper.appendChild(p);
+    });
+    extraEl.appendChild(paper);
+    reactionText.textContent = "";
+    nextBtn.textContent = "Continue ➜";
+    setTimeout(() => reaction.classList.remove("hidden"), reduceMotion ? 0 : 2200);
+    ntfy("Maria is reading your letter 💌", "She reached the page with your message.");
 }
 
 function showVerse(v) {
@@ -616,13 +646,17 @@ function placeNo() {
     const w = noBtn.offsetWidth;
     const h = noBtn.offsetHeight;
     const pad = 12;
+    // measure YES at its final (grown) size, not mid-animation
+    const prevTransition = yesBtn.style.transition;
+    yesBtn.style.transition = "none";
     const yes = yesBtn.getBoundingClientRect();
+    yesBtn.style.transition = prevTransition;
     let best = null;
     let bestDist = -1;
     for (let i = 0; i < 30; i++) {
         const x = rand(pad, Math.max(pad, vw - w - pad));
         const y = rand(pad, Math.max(pad, vh - h - pad));
-        const overYes = x < yes.right + 10 && x + w > yes.left - 10 && y < yes.bottom + 10 && y + h > yes.top - 10;
+        const overYes = x < yes.right + 24 && x + w > yes.left - 24 && y < yes.bottom + 24 && y + h > yes.top - 24;
         if (overYes) continue;
         const d = Math.hypot(x + w / 2 - lastPointer.x, y + h / 2 - lastPointer.y);
         if (d > bestDist) { best = { x, y }; bestDist = d; }
@@ -631,6 +665,9 @@ function placeNo() {
     if (!best) best = { x: pad, y: pad };
     noBtn.style.left = best.x + "px";
     noBtn.style.top = best.y + "px";
+    noBtn.classList.remove("jump");
+    void noBtn.offsetWidth;
+    noBtn.classList.add("jump");
 }
 
 function resetButtons() {
@@ -671,6 +708,8 @@ noBtn.addEventListener("click", (e) => {
     dodge();
 });
 yesBtn.addEventListener("click", (e) => {
+    // a click right after NO ran away was aimed at NO, not a real YES
+    if (performance.now() - lastDodge < 500) return;
     burstHearts(e.clientX, e.clientY, 10);
     answer("YES");
 });
